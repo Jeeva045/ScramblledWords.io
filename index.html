@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Afacad&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        background-color: rgb(63, 120, 242);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: "Raleway", sans-serif;
+    }
+    .container{
+        background-color: white;
+        text-align: left;
+        padding: 40px;
+        width:300px;
+        border-radius: 10px;
+        position: relative;
+    }
+    .buttons{
+    display: flex;
+    
+    gap: 30px;
+    margin-top: 18px;
+}
+input{
+    width:90%;
+    padding:10px;
+}
+.button{
+    padding: 10px;
+    background-color: rgb(87, 114, 221);
+    color: white;
+    border: 2px rgb(87, 114, 221) solid ;
+    border-radius: 10px;
+    transition: all 0.5s;
+    width: 150px;
+    font-size: 18px;
+}
+.button:hover{
+    background-color: transparent;
+    color: rgb(87, 114, 221);
+}
+#hint,#time{
+    font-weight: 500;
+}
+h2{
+    font-weight: 600;
+    position: absolute;
+    top:10px;
+    left:32px
+}
+#scrambled-word{
+    margin-top: 40px;
+    margin-bottom: 30px;
+    text-align: center;  
+    letter-spacing: 12px;
+}
+</style>
+<body>
+    <div class="container">
+        <h2>WORD SCRAMBLE</h2>
+    <h1 id="scrambled-word"></h1>
+    <h3 id="hint"></h2>
+    <h3 id="time"></h2>
+    <input type="text" placeholder="Type your answer" id="input">
+    <div class="buttons">
+    <button onclick="refresh()" class="button">Refresh</button>
+    <button onclick="check()" class="button">Check</button>
+</div>
+    </div>
+    <script>
+        let words=[ { word: "dog", hint: "a domesticated carnivorous mammal" },
+  { word: "moon", hint: "the natural satellite of the Earth" },
+  { word: "car", hint: "a wheeled motor vehicle used for transportation" },
+  { word: "house", hint: "a building for human habitation" },
+  { word: "phone", hint: "a device used for communication" },
+  { word: "rain", hint: "precipitation in the form of water droplets" },
+  { word: "beach", hint: "a sandy shore by the sea or ocean" },
+  { word: "coffee", hint: "a brewed beverage made from roasted coffee beans" },
+  { word: "bicycle", hint: "a vehicle with two wheels propelled by pedals" },
+  { word: "music", hint: "the art of arranging sounds in time" },
+  { word: "tree", hint: "a woody perennial plant with a single main stem or trunk" },
+  { word: "chair", hint: "a piece of furniture for sitting" },
+  { word: "bird", hint: "a warm-blooded egg-laying vertebrate animal" },
+  { word: "school", hint: "an institution for educating children" },
+  { word: "lake", hint: "a large body of water surrounded by land" },
+  { word: "cake", hint: "a sweet baked dessert" },
+  { word: "star", hint: "a luminous celestial body in the sky" },
+  { word: "watch", hint: "a small timepiece worn on the wrist" },
+  { word: "mountain", hint: "a large landform that rises above its surroundings" },
+  { word: "book", hint: "a written or printed work consisting of pages" },
+  { word: "flower", hint: "the reproductive structure found in flowering plants" },
+  { word: "river", hint: "a large natural stream of water flowing in a channel" },
+  { word: "shirt", hint: "a garment worn on the upper body" },
+  { word: "cloud", hint: "a visible mass of condensed water vapor" },
+  { word: "pencil", hint: "a writing implement with a graphite core" },
+  { word: "chair", hint: "a piece of furniture for sitting" },
+  { word: "dog", hint: "a domesticated carnivorous mammal" },
+  { word: "moon", hint: "the natural satellite of the Earth" },
+  { word: "car", hint: "a wheeled motor vehicle used for transportation" },
+  { word: "house", hint: "a building for human habitation" },
+  { word: "phone", hint: "a device used for communication" },
+  { word: "rain", hint: "precipitation in the form of water droplets" },
+  { word: "beach", hint: "a sandy shore by the sea or ocean" },
+  { word: "coffee", hint: "a brewed beverage made from roasted coffee beans" },
+  { word: "bicycle", hint: "a vehicle with two wheels propelled by pedals" },
+  { word: "music", hint: "the art of arranging sounds in time" },
+  { word: "tree", hint: "a woody perennial plant with a single main stem or trunk" },
+  { word: "chair", hint: "a piece of furniture for sitting" },
+  { word: "bird", hint: "a warm-blooded egg-laying vertebrate animal" },
+  { word: "school", hint: "an institution for educating children" },
+  { word: "lake", hint: "a large body of water surrounded by land" },
+  { word: "cake", hint: "a sweet baked dessert" },
+  { word: "star", hint: "a luminous celestial body in the sky" },
+  { word: "watch", hint: "a small timepiece worn on the wrist" },
+  { word: "mountain", hint: "a large landform that rises above its surroundings" },
+  { word: "book", hint: "a written or printed work consisting of pages" },
+  { word: "flower", hint: "the reproductive structure found in flowering plants" },
+  { word: "river", hint: "a large natural stream of water flowing in a channel" },
+  { word: "shirt", hint: "a garment worn on the upper body" },
+  { word: "cloud", hint: "a visible mass of condensed water vapor" },
+  { word: "pencil", hint: "a writing implement with a graphite core" }]
+    let word;
+    let typedVAlue=document.getElementById("input")
+    let TImerh1=document.getElementById("time")
+    let sword=document.getElementById("scrambled-word")
+    let hintw=document.getElementById("hint")
+    let timerValue;
+    let timer=null;
+    refresh()
+    function refresh()
+        {
+        clearInterval(timer)
+        typedVAlue.value=""
+        let random=Math.floor(Math.random()*words.length)
+        word=words[random].word
+        let hint=words[random].hint
+        let scrambledWord=""
+        let index=[]
+        
+        timerValue=30
+        function giverandomn(x){
+            return Math.floor(Math.random()*x.length)
+
+        }
+        while(true)
+        {
+            randomIndex=giverandomn(word)
+            if(!(index.includes(randomIndex)))
+            {
+                scrambledWord+=word[randomIndex]
+                index.push(randomIndex)
+            }
+            if(word.length==scrambledWord.length)
+            {
+                break
+            }        
+        }
+        sword.innerText=scrambledWord.toUpperCase()
+        hintw.innerText="Hint: "+hint
+        timer=setInterval(timerinter,1000)
+        function timerinter(){
+            if(timerValue==0){
+                alert("Time up!!!")
+                refresh()
+            }
+            TImerh1.innerText="Time left: "+timerValue
+            console.log("hii")
+            timerValue-=1
+            
+        }
+    }
+    
+    
+    function check()
+    {
+        let typedVAlue=(document.getElementById("input")).value
+        if(typedVAlue.toLowerCase()==word)
+        {
+        alert("CORRECT ANSWER")
+        }
+        else
+        {
+            alert("Wrong answer and the correct answer is "+word.toUpperCase())
+        }
+        refresh()
+    }
+    </script>
+</body>
+</html>
